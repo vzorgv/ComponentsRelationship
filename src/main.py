@@ -1,7 +1,6 @@
 import asyncio
 import os
-import graphviz as graphviz
-import constants
+from src import constants
 
 from xml.etree.ElementTree import parse
 
@@ -74,4 +73,4 @@ async def main(root_dir: str):
 
 
 if __name__ == "__main__":
-    asyncio.run(main("C:\\Repo"))
+    asyncio.run(main("C:\\NetProjects"))
