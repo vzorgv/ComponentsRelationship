@@ -68,7 +68,9 @@ def append_package(package_name: str, packages_used: list):
 
 
 def build_graph() -> object:
-    graph = Digraph('Components', node_attr={'color': 'lightblue2', 'style': 'filled'})
+    graph = Digraph('Components',
+                    node_attr={'color': 'lightblue2', 'style': 'filled', 'fontsize': '24'},
+                    graph_attr={'ranksep': '50', 'fontsize': '24'})
 
     for vertex in __package_graph:
         used_list = __package_graph[vertex]
@@ -93,4 +95,4 @@ async def main(root_dir: str):
 
 
 if __name__ == "__main__":
-    asyncio.run(main("C:\\Repo"))
+    asyncio.run(main("C:\\NetProjects"))
