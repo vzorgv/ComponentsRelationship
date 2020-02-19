@@ -9,17 +9,24 @@ from pathlib import Path
 __package_graph = dict()
 
 
+def get_tag_name(root, tag_name):
+    result = tag_name
+    if constants.DEFAULT_NAMESPACE_OLDVERSION in root.tag:
+        result = constants.DEFAULT_NAMESPACE_OLDVERSION + tag_name
+    return result
+
+
 def get_package_name(root, file_name: str):
     package = ""
 
     package_list = [package.text
-                    for group in root if group.tag == constants.PROPERTYGROUP_TAG_NAME
-                    for package in group if package.tag == constants.PACKAGEID_TAG_NAME]
+                    for group in root if group.tag == get_tag_name(root, constants.PROPERTYGROUP_TAG_NAME)
+                    for package in group if package.tag == get_tag_name(root, constants.PACKAGEID_TAG_NAME)]
 
     if not package_list:
         package_list = [assembly.text
-                        for group in root if group.tag == constants.PROPERTYGROUP_TAG_NAME
-                        for assembly in group if assembly.tag == constants.ASSEMBLY_GROUP_TAG_NAME]
+                        for group in root if group.tag == get_tag_name(root, constants.PROPERTYGROUP_TAG_NAME)
+                        for assembly in group if assembly.tag == get_tag_name(root, constants.ASSEMBLY_GROUP_TAG_NAME)]
     else:
         package = package_list[0]
 
@@ -39,8 +46,8 @@ async def parse_agent(file_name: str, dict_handle):
     root_package_name = get_package_name(root, file_name)
 
     items = [reference
-             for items in root if items.tag == constants.ITEMGROUP_TAG_NAME
-             for reference in items if reference.tag == constants.PACKAGEREFERENCE_TAG_NAME]
+             for items in root if items.tag == get_tag_name(root, constants.ITEMGROUP_TAG_NAME)
+             for reference in items if reference.tag == get_tag_name(root, constants.PACKAGEREFERENCE_TAG_NAME) or reference.tag == get_tag_name(root, constants.REFERENCE_TAG_NAME)]
 
     packages_used = []
     for elem in items:
@@ -67,7 +74,7 @@ def append_package(package_name: str, packages_used: list):
     __package_graph[package_name] = list_exist
 
 
-def build_graph() -> object:
+def build_graph():
     graph = Digraph('Components',
                     node_attr={'color': 'lightblue2', 'style': 'filled', 'fontsize': '24'},
                     graph_attr={'ranksep': '50', 'fontsize': '24'})
@@ -95,4 +102,4 @@ async def main(root_dir: str):
 
 
 if __name__ == "__main__":
-    asyncio.run(main("C:\\NetProjects"))
+    asyncio.run(main("C:\\Repo"))
