@@ -24,6 +24,7 @@ class VSProjectFileParser(Agent):
 
         await asyncio.gather(*tasks, )
 
+        print(self.__digraph)
         return self.__digraph
 
     def __get_file_names(self, root_dir):
