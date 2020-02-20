@@ -1,4 +1,3 @@
-import asyncio
 import os
 
 from typing import Dict
@@ -20,7 +19,6 @@ class VSProjectFileParser(Agent):
         for file_name in files:
             await self.__parse_file(file_name, self.__append_package)
 
-        print(self.__digraph)
         return self.__digraph
 
     def __get_file_names(self, root_dir):

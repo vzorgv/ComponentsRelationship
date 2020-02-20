@@ -16,6 +16,12 @@ async def __main():
 
     await asyncio.gather(*tasks, )
 
+    digraph = tasks[0].result()
+    digraph.update(tasks[1].result())
+
+    return digraph
+
 
 if __name__ == "__main__":
-    asyncio.run(__main())
+    result = asyncio.run(__main())
+    print(result)

@@ -1,4 +1,5 @@
 import aiohttp
+import json
 
 from src.agents import Agent
 
@@ -9,11 +10,16 @@ class ProgetFeedParser(Agent):
         self.__url = url
 
     async def build_digraph(self) -> dict:
-        await self.__send_request()
+        json = await self.__send_request()
+
+        return await self.__parse_json(json)
+
+    async def __parse_json(self, json):
         return dict()
 
     async def __send_request(self):
         async with aiohttp.ClientSession() as session:
             async with session.get(self.__url) as response:
                 json_body = await response.json()
-                print(json_body)
+
+        return json_body
