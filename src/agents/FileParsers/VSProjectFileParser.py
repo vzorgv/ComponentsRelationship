@@ -3,7 +3,7 @@ import os
 
 from typing import Dict
 from src.agents import Agent
-from src.agents.file_parsers import VSProjectConstants
+from src.agents.FileParsers import VSProjectConstants
 from xml.etree.ElementTree import parse
 
 
