@@ -1,5 +1,3 @@
-from typing import Set
-
 PROJ_FILE_EXT = ".csproj"
 PROPERTYGROUP_TAG_NAME = "PropertyGroup"
 ASSEMBLY_GROUP_TAG_NAME = "AssemblyName"
