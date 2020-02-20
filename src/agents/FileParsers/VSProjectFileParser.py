@@ -15,14 +15,10 @@ class VSProjectFileParser(Agent):
         self.__root_directory = root_directory
 
     async def build_digraph(self) -> dict:
-        tasks = []
         files = self.__get_file_names(self.__root_directory)
 
         for file_name in files:
-            task = asyncio.create_task(self.__parse_file(file_name, self.__append_package))
-            tasks.append(task)
-
-        await asyncio.gather(*tasks, )
+            await self.__parse_file(file_name, self.__append_package)
 
         print(self.__digraph)
         return self.__digraph
