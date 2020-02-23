@@ -1,8 +1,6 @@
 import aiohttp
-import json
 
 from src.agents import Agent
-from src.agents.NugetFeedParser.PackageDescriptor import PackageDescriptor
 
 
 class ProgetFeedParser(Agent):
@@ -16,13 +14,31 @@ class ProgetFeedParser(Agent):
         return await self.__parse_json(json)
 
     async def __parse_json(self, json):
-        raw_list = json["d"]["results"]
         result = dict()
-        for item in raw_list:
-            package_id = item["Id"]
-            result[package_id] = [item["Dependencies"]]
-            x = PackageDescriptor(package_id, item["Dependencies"])
+        raw_list = json.get("d")
+
+        if raw_list is not None:
+            raw_list = raw_list.get("results")
+            if raw_list:
+                for item in raw_list:
+                    package_id = item.get("Id")
+                    dependencies = item.get("Dependencies")
+                    dep_list = self.__parse_dependencies(dependencies)
+                    result[package_id] = dep_list
         return result
+
+    def __parse_dependencies(self, dependencies: str):
+        if dependencies == "":
+            return []
+
+        dep_names = set()
+        dep_by_platform = dependencies.split('|')
+        for dep in dep_by_platform:
+            idx = dep.find(':')
+            if dep[:idx] != "":
+                dep_names.add(dep[:idx])
+
+        return list(dep_names)
 
     async def __send_request(self):
         async with aiohttp.ClientSession() as session:
