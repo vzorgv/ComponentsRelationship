@@ -4,18 +4,18 @@ from src.agents.NugetFeedParser.ProgetFeedParser import ProgetFeedParser
 
 
 async def __main():
-    file_parser = VSProjectFileParser("C:\\Repo")
-    digraph_file = await file_parser.build_digraph()
+    repository_agent = VSProjectFileParser("C:\\Repo")
+    digraph_result = await repository_agent.build_digraph()
 
     # awaiting for repository result as a baseline for packages
     # information from feeds considered as actual and will rewrite data from repository
     feed_agent = ProgetFeedParser(
         "http://proget.aeroclub.int/nuget/AeroclubRelease/Packages?$format=json&$orderby=Id,Version")
-    digraph = await feed_agent.build_digraph()
+    digraph_feed = await feed_agent.build_digraph()
 
-    digraph.update(digraph_file)
+    digraph_result.update(digraph_feed)
 
-    return digraph
+    return digraph_result
 
 
 if __name__ == "__main__":
