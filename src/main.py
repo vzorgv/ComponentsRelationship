@@ -4,6 +4,7 @@ from src.agents.NugetFeedParser.ProgetFeedParser import ProgetFeedParser
 
 
 async def __main():
+    # TODO: make it parallel
     file_parser = VSProjectFileParser("C:\\NetProjects")
     digraph_file = await file_parser.build_digraph()
 
